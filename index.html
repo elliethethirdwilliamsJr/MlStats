@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLSTATS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+</head>
+<body class="bg-black text-white font-sans">
+
+<!-- Header -->
+<header class="flex justify-between items-center px-4 py-4">
+  <h1 class="text-2xl font-bold">MLSTATS</h1>
+  <img src="your-logo.png" alt="Logo" class="w-10 h-10 object-contain rounded-full" />
+</header>
+
+
+  <!-- Main Content -->
+  <main class="pb-24"> <!-- add padding bottom to make space for footer -->
+
+    <!-- Banner -->
+    <section class="relative">
+      <img src="https://cdn.oneesports.gg/cdn-data/2022/10/MLBB_Aldous_hero_wallpaper.jpg"
+           class="w-full h-52 object-cover rounded-md" />
+      <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-4 rounded-md">
+        <h2 class="text-3xl font-bold mb-2">MLSTATS</h2>
+        <div class="flex gap-2">
+          <button class="bg-green-500 text-black font-bold px-4 py-2 rounded">Check Stats</button>
+          <button class="bg-white/10 text-white px-4 py-2 rounded border border-white/20">Learn More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Ranked Heroes -->
+<section class="px-4 mt-6">
+  <div class="flex justify-between items-center mb-3">
+    <h3 class="text-lg font-semibold">Top Ranked Heroes</h3>
+    <div>
+      <select id="daySelector" class="text-xs border border-gray-600 rounded px-3 py-1 bg-gray-900 text-white">
+  <option value="1">1 Day</option>
+       <option value="2">2 Days</option>
+<option value="3">3 Days</option>
+<option value="4">4 Days</option>
+<option value="5">5 Days</option>
+<option value="6">6 Days</option>
+<option value="7">7 Days</option>
+<option value="8">8 Days</option>
+<option value="9">9 Days</option>
+<option value="10">10 Days</option>
+<option value="11">11 Days</option>
+<option value="12">12 Days</option>
+<option value="13">13 Days</option>
+<option value="14">14 Days</option>
+<option value="15">15 Days</option>
+<option value="16">16 Days</option>
+<option value="17">17 Days</option>
+<option value="18">18 Days</option>
+<option value="19">19 Days</option>
+<option value="20">20 Days</option>
+<option value="21">21 Days</option>
+<option value="22">22 Days</option>
+<option value="23">23 Days</option>
+<option value="24">24 Days</option>
+<option value="25">25 Days</option>
+<option value="26">26 Days</option>
+<option value="27">27 Days</option>
+<option value="28">28 Days</option>
+<option value="29">29 Days</option>
+<option value="30">30 Days</option>
+</select>
+    </div>
+  </div>
+  <div id="statsContainer" class="flex gap-4 overflow-x-auto pb-4"></div>
+</section>
+
+
+    <section id="heroListSection" class="px-4 sm:px-6 lg:px-8 py-8 bg-[#111827] text-white">
+ <div class="max-w-7xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-extrabold mb-6 text-center">
+      Hero List <span class="text-yellow-400">(W/Roles & Lanes)</span>
+    </h2>
+    <div id="heroListContainer" class="space-y-8">
+      <!-- JS will inject grouped hero cards here -->
+    </div>
+    
+  </div>
+</section>
+    
+<div id="heroModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-start justify-center z-50 hidden transition-opacity overflow-y-auto">
+  <div id="heroModalContent" class="bg-[#1f2937] text-white rounded-2xl p-6 w-full max-w-lg mt-10 shadow-2xl max-h-[90vh] overflow-y-auto border border-gray-600">
+    <!-- Content will be injected here -->
+  </div>
+</div>
+
+<!-- Winrate Calculator Section -->
+<section id="wrCalculator" class="hidden px-6 py-10 animate-fade-in space-y-6">
+  <h2 class="text-2xl font-bold text-center text-yellow-400">Winrate Calculator</h2>
+  <div class="space-y-4 max-w-md mx-auto">
+    <div>
+      <label class="block mb-1 text-sm text-gray-300">Current Matches</label>
+      <input id="currentMatches" type="number" class="w-full px-3 py-2 bg-gray-800 rounded border border-gray-600 focus:outline-none" />
+    </div>
+    <div>
+      <label class="block mb-1 text-sm text-gray-300">Current Winrate (%)</label>
+      <input id="currentWR" type="number" step="0.01" class="w-full px-3 py-2 bg-gray-800 rounded border border-gray-600 focus:outline-none" />
+    </div>
+    <div>
+      <label class="block mb-1 text-sm text-gray-300">Desired Winrate (%)</label>
+      <input id="desiredWR" type="number" step="0.01" class="w-full px-3 py-2 bg-gray-800 rounded border border-gray-600 focus:outline-none" />
+    </div>
+    <button id="calculateBtn" class="w-full bg-yellow-400 text-black font-bold py-2 rounded hover:bg-yellow-300 transition">
+      Calculate Needed Wins
+    </button>
+    <p id="wrResult" class="text-center text-lg text-green-400 font-semibold"></p>
+  </div>
+</section>
+
+<section id="aboutSection" class="hidden px-4 py-10 animate-fade-in text-white">
+  <div class="max-w-2xl mx-auto bg-[#1f2937] border border-gray-700 rounded-xl shadow-lg p-6 sm:p-10 text-center space-y-6">
+    <h2 class="text-3xl font-bold text-blue-400">About MLSTATS</h2>
+    <p class="text-gray-300">
+      MLSTATS is an <strong>unofficial Mobile Legends tracker</strong> created by <span class="text-white font-semibold">Ellie the Dev</span>.
+    </p>
+    <p class="text-gray-400">
+      Built for stat-checking, exploration, and community use. Not affiliated with Moonton or its partners.
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4 pt-4">
+      <a href="https://github.com/YOUR_GITHUB" target="_blank"
+         class="bg-gray-800 hover:bg-gray-700 transition px-4 py-2 rounded-md text-sm font-medium">
+        GitHub
+      </a>
+      <a href="https://facebook.com/YOUR_FACEBOOK" target="_blank"
+         class="bg-blue-600 hover:bg-blue-500 transition px-4 py-2 rounded-md text-sm font-medium">
+        Facebook
+      </a>
+      <a href="https://reddit.com/user/YOUR_REDDIT" target="_blank"
+         class="bg-red-600 hover:bg-red-500 transition px-4 py-2 rounded-md text-sm font-medium">
+        Reddit
+      </a>
+      <a href="https://your-portfolio.site" target="_blank"
+         class="bg-purple-700 hover:bg-purple-600 transition px-4 py-2 rounded-md text-sm font-medium">
+        Portfolio
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+  </main>
+
+  <!-- Footer -->
+<footer class="fixed bottom-0 w-full bg-black border-t border-gray-800 flex justify-around py-2 z-50">
+  <button id="homeBtn" class="flex flex-col items-center text-green-400 text-sm transition-all">
+    <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+    <span>Home</span>
+  </button>
+
+  <button id="wrCalcuBtn" class="flex flex-col items-center text-yellow-400 text-sm transition-all">
+    <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </svg>
+    <span>WR Calcu</span>
+  </button>
+
+  <button id="aboutBtn" class="flex flex-col items-center text-blue-400 text-sm transition-all">
+    <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+    </svg>
+    <span>About Us</span>
+  </button>
+</footer>
+
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ once: true });
+  </script>
+  <script src="app.js"></script>
+</body>
+<script>
+  const wrBtn = document.getElementById("wrCalcuBtn");
+const homeBtn = document.getElementById("homeBtn");
+const wrCalc = document.getElementById("wrCalculator");
+const stats = document.getElementById("statsContainer");
+const heroListSection = document.getElementById("heroListSection");
+const bannerSection = document.querySelector("section.relative");
+
+wrBtn.addEventListener("click", () => {
+  stats.classList.add("hidden");
+  heroListSection.classList.add("hidden");
+  daySelector.parentElement.parentElement.classList.add("hidden");
+  bannerSection.classList.add("hidden");
+
+  wrCalc.classList.remove("hidden");
+});
+
+const aboutBtn = document.getElementById("aboutBtn");
+const aboutSection = document.getElementById("aboutSection");
+
+aboutBtn.addEventListener("click", () => {
+  stats.classList.add("hidden");
+  heroListSection.classList.add("hidden");
+  daySelector.parentElement.parentElement.classList.add("hidden");
+  bannerSection.classList.add("hidden");
+  wrCalc.classList.add("hidden");
+
+  aboutSection.classList.remove("hidden");
+});
+
+homeBtn.addEventListener("click", () => {
+  stats.classList.remove("hidden");
+  heroListSection.classList.remove("hidden");
+  daySelector.parentElement.parentElement.classList.remove("hidden");
+  bannerSection.classList.remove("hidden");
+  wrCalc.classList.add("hidden");
+  aboutSection.classList.add("hidden");
+});
+
+
+
+  document.getElementById("calculateBtn").addEventListener("click", () => {
+    const matches = parseInt(document.getElementById("currentMatches").value);
+    const currentWR = parseFloat(document.getElementById("currentWR").value);
+    const desiredWR = parseFloat(document.getElementById("desiredWR").value);
+    const result = document.getElementById("wrResult");
+
+    if (isNaN(matches) || isNaN(currentWR) || isNaN(desiredWR)) {
+      result.textContent = "Please fill out all fields properly.";
+      return;
+    }
+
+    const currentWins = matches * (currentWR / 100);
+    const neededTotalGames = currentWins / (desiredWR / 100);
+    const winsNeeded = Math.ceil(neededTotalGames - matches);
+
+    if (winsNeeded <= 0) {
+      result.textContent = "You're already above your desired winrate!";
+    } else {
+      result.textContent = `You need to win ${winsNeeded} more matches in a row.`;
+    }
+  });
+</script>
+
+
+
+</html>
