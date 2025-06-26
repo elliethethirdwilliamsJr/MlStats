@@ -164,7 +164,7 @@ function showHeroModal(heroName) {
   modalContent.innerHTML = `<p class="text-center text-gray-400 py-4">Loading hero data...</p>`;
   modal.classList.remove("hidden");
 
-  fetch(`https://mlbb-stats.ridwaanhall.com/api/hero-detail/${matchedId}/?format=json`)
+  fetch(`https://api.codetabs.com/v1/proxy/?quest=https://mlbb-stats.ridwaanhall.com/api/hero-detail/${matchedId}/?format=json`)
   .then((res) => res.json())
   .then((data) => {
     const hero = data?.data?.records?.[0]?.data?.hero?.data;
