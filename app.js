@@ -21,7 +21,7 @@ function showSkeletons() {
 // ----------------- Hero Stats Fetch -----------------
 function fetchAndRender(day = 1) {
   showSkeletons();
-  fetch(`https://mlbb-stats.ridwaanhall.com/api/hero-rank/?days=${day}&format=json&index=2&rank=mythic&size=10&sort_field=pick_rate&sort_order=asc`)
+  fetch(`https://api.codetabs.com/v1/proxy/?quest=https://mlbb-stats.ridwaanhall.com/api/hero-rank/?days=${day}&format=json&index=2&rank=mythic&size=10&sort_field=pick_rate&sort_order=asc`)
     .then(res => res.json())
     .then(json => {
       statsContainer.innerHTML = "";
@@ -64,7 +64,7 @@ async function fetchAllHeroesPerCombo(role, lane) {
   let allHeroes = [];
 
   while (true) {
-    const url = `https://mlbb-stats.ridwaanhall.com/api/hero-position/?role=${role}&lane=${lane}&size=${perPage}&index=${page}`;
+    const url = `https://api.codetabs.com/v1/proxy/?quest=https://mlbb-stats.ridwaanhall.com/api/hero-position/?role=${role}&lane=${lane}&size=${perPage}&index=${page}`;
     const res = await fetch(url);
     const json = await res.json();
 
@@ -124,7 +124,7 @@ const normalize = (str) => str.toLowerCase().replace(/\s+/g, "").replace(/[^a-z0
 // Fetch hero ID-name list once
 async function fetchHeroIdList() {
   try {
-    const res = await fetch("https://mlbb-stats.ridwaanhall.com/api/hero-list/?format=json");
+    const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=https://mlbb-stats.ridwaanhall.com/api/hero-list/?format=json");
     heroListById = await res.json();
 
     // Reverse lookup for matching hero names
